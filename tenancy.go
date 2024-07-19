@@ -8,12 +8,14 @@ import (
 
 type Tenancy struct {
 	Name string
-	Db   *gorm.DB
+	DB   *gorm.DB
 }
 
 func (tenancy *Tenancy) InitModels(models ...interface{}) {
+	tenancy.DB.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
+
 	log.Println("Running Migrations")
-	err := tenancy.Db.AutoMigrate(models...)
+	err := tenancy.DB.AutoMigrate(models...)
 
 	if err != nil {
 		panic(err)

@@ -38,6 +38,6 @@ func Connect(tenant string) *Tenancy {
 	}
 	return &Tenancy{
 		Name: tenant,
-		Db:   ConnectionMap[tenant],
+		DB:   ConnectionMap[tenant],
 	}
 }
