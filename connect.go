@@ -18,6 +18,9 @@ type ConnectionOptions struct {
 }
 
 func Connect(tenant string) *Tenancy {
+	if tenant == "" {
+		tenant = os.Getenv("DB_NAME")
+	}
 	opts := ConnectionOptions{
 		Host: os.Getenv("DB_HOST"),
 		Port: os.Getenv("DB_PORT"),
