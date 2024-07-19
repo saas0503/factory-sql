@@ -1,4 +1,4 @@
-package sql
+package base
 
 import (
 	"github.com/google/uuid"
