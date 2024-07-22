@@ -14,7 +14,6 @@ func TenantMiddleware(next http.Handler) http.Handler {
 		tenant := r.Header.Get("X-API-KEY")
 
 		if tenant != "" {
-			Connect(tenant)
 			ctx := context.WithValue(r.Context(), TenantToken, tenant)
 			r = r.WithContext(ctx)
 		}
