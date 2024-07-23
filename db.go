@@ -5,42 +5,37 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"os"
 )
 
 type DB struct {
-	isTenancy     bool
+	opt           ConnectionOptions
 	ConnectionMap map[string]*gorm.DB
 }
 
 type ConnectionOptions struct {
-	Host string
-	Port string
-	User string
-	Pass string
+	Host      string
+	Port      string
+	Username  string
+	Password  string
+	Database  string
+	IsTenancy bool
 }
 
-func NewDB(isTenancy bool) *DB {
+func NewDB(conn ConnectionOptions) *DB {
 	return &DB{
-		isTenancy:     isTenancy,
+		opt:           conn,
 		ConnectionMap: make(map[string]*gorm.DB),
 	}
 }
 
 func (db *DB) Connect(tenant string) *gorm.DB {
-	opts := ConnectionOptions{
-		Host: os.Getenv("DB_HOST"),
-		Port: os.Getenv("DB_PORT"),
-		User: os.Getenv("DB_USER"),
-		Pass: os.Getenv("DB_PASS"),
-	}
-
-	if !db.isTenancy || tenant == "" {
-		tenant = os.Getenv("DB_NAME")
+	opts := db.opt
+	if !opts.IsTenancy || tenant == "" {
+		tenant = db.opt.Database
 	}
 
 	if db.ConnectionMap[tenant] == nil {
-		dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", opts.Host, opts.Port, opts.User, opts.Pass, tenant)
+		dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", opts.Host, opts.Port, opts.Username, opts.Password, tenant)
 
 		conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err != nil {
@@ -52,7 +47,7 @@ func (db *DB) Connect(tenant string) *gorm.DB {
 }
 
 func (db *DB) InitModels(models ...interface{}) {
-	name := os.Getenv("DB_NAME")
+	name := db.opt.Database
 
 	migration(db.ConnectionMap[name], models...)
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/saas0503/factory-sql/tenant"
 )
 
-func Bootstrap(db *DB) {
+func (db *DB) Bootstrap() {
 	dbMaster := db.Connect("")
 	db.InitModels(&tenant.Tenant{})
 
