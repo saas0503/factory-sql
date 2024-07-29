@@ -1,4 +1,4 @@
-module github.com/saas0503/factory-sql
+module github.com/saas0503/fsql
 
 go 1.22.0
 

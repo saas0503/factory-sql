@@ -1,7 +1,7 @@
-package sql
+package fsql
 
 import (
-	"github.com/saas0503/factory-sql/tenant"
+	"github.com/saas0503/fsql/tenant"
 )
 
 func (db *DB) Bootstrap() {

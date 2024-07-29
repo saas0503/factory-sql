@@ -1,4 +1,4 @@
-package sql
+package fsql
 
 import "gorm.io/gorm"
 

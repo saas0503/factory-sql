@@ -1,6 +1,6 @@
 package tenant
 
-import "github.com/saas0503/factory-sql/base"
+import "github.com/saas0503/fsql/base"
 
 type Tenant struct {
 	base.Model `gorm:"embedded"`
